@@ -1,0 +1,21 @@
+# Environment
+.env
+
+audio_uploads/
+
+lecture_data/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+venv/
+env/
+
+*.index
+*.faiss
+
+.DS_Store
+Thumbs.db

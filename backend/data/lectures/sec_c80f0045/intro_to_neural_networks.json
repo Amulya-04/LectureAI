@@ -1,0 +1,38 @@
+{
+  "title": "Intro to neural networks",
+  "transcript": " Here are five things to know about neural networks in under five minutes. Number one, neural networks are composed of node layers. There is an input node layer. There is a hidden layer and there is an output layer. And these neural networks reflect the behaviour of the human brain, allowing computer programmes to recognise patterns and solve common problems in the fields of AI and deep learning. In fact, we should be describing this as an artificial neural network or an ANN to distinguish it from the very unartificial neural network that's operating in our heads. Now, think of each node or artificial neuron as its own linear regression model. That's number two. Linear regression is a mathematical model that's used to predict future events. The weights of the connections between the nodes determines how much influence each input has on the output. So each node is composed of input data weights a bias or a threshold and then an output Now data is passed from one layer in the neural network to the next in what is known as a feed forward network Number three. To illustrate this, let's consider what a single node in our neural network might look like to decide, should we go surfing? The decision to go or not is our predicted outcome or known as our Y hat. Let's assume there are three factors influencing our decision. The waves good, one for yes or zero for no. The waves are pumping, so X1 equals one, one for yes. Is the line up empty? Well, unfortunately not, so that gets a zero. And then let's consider, is it shark free out there? That's X3. And yeah, no shark attacks have been reported. Now to each decision, we assign a weight based on its importance on a scale of zero. on a scale of zero to five. So let's say that the waves, we're going to score that one. Now, this is important. Let's give it a five. And for the crowds that w2 Not so important We give that a two And sharks well we give that a score of a 4 Now, we can plug in these values into the formula to get the desired output. So y hat equals 1 times 5 plus 0 times 2 plus 1 times 4. then minus three, that's our threshold, and that gives us a value of six. Six is greater than zero, so the output of this node is one. We're going surfing. And if we adjust the weights of the threshold, we can achieve different outcomes. Number four. Well, yes, but number four. Neural networks rely on training data to learn and improve their accuracy over time. We leverage supervised learning or labeled data sets to train the algorithm. As we train the model, we want to evaluate its accuracy using something called a cost function Ultimately the goal is to minimize our cost function to ensure the correctness fit for any given observation And that happens as the model adjusts its weights and biases to fit the training data set through what's known as gradient descent, allowing the model to determine the direction to take to reduce errors or more specifically, minimize the cost function. And then finally, number five, there are multiple types of neural networks beyond the feed forward neural network that we've described here. For example, there are convolutional neural networks, known as CNNs, which have a unique architecture that's well suited for identifying patterns like image recognition. And there are recurrent neural networks, or RNNs, which are identified by their feedback loops. And RNNs are primarily leveraged using time series data to make predictions about future events like sales forecasting. So five things in five minutes. To learn more about neural networks check out these videos thanks for watching if you have any questions please drop us a line below and if you want to see more videos like this in the future please like and subscribe",
+  "summary": {
+    "overview": "A brief introduction to neural networks, covering their composition, functionality, and types, as well as how they learn and improve through training data.",
+    "key_topics": [
+      "Artificial Neural Networks",
+      "Deep Learning",
+      "Linear Regression",
+      "Feed Forward Networks",
+      "Neural Network Types"
+    ],
+    "main_points": [
+      "Neural networks are composed of node layers: input, hidden, and output",
+      "Each node is a linear regression model, with weights determining input influence on output",
+      "Data is passed through the network in a feed forward manner",
+      "Neural networks learn and improve through training data and supervised learning",
+      "There are multiple types of neural networks, including CNNs and RNNs"
+    ],
+    "key_concepts": [
+      "Artificial Neuron",
+      "Linear Regression",
+      "Feed Forward Network",
+      "Supervised Learning",
+      "Cost Function",
+      "Gradient Descent"
+    ],
+    "action_items": [
+      "Learn more about neural networks through additional resources",
+      "Explore different types of neural networks and their applications",
+      "Practice building and training neural networks using supervised learning",
+      "Investigate the use of cost functions and gradient descent in neural network optimization",
+      "Apply neural network concepts to real-world problems and projects"
+    ]
+  },
+  "wordCount": 669,
+  "createdAt": "2026-05-07T15:02:31.116Z"
+}

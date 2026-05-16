@@ -1,0 +1,16 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://lectureai-poem.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/uploads/*"
+  to = "https://lectureai-poem.onrender.com/uploads/:splat"
+  status = 200
+  force = true
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "frontend/dist"

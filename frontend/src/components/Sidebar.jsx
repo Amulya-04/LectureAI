@@ -3,6 +3,7 @@ import { useState } from 'react';
 export default function Sidebar({
   user, sections, notifications, activeSection, activeLecture,
   onSelectSection, onSelectLecture, onBrowse, onLogout,
+  onProfile, onPersonalWorkspace, activeView
 }) {
   const [expandedSection, setExpandedSection] = useState(activeSection?.id || null);
 
@@ -26,7 +27,7 @@ export default function Sidebar({
       </div>
 
       {/* User Info */}
-      <div className="sidebar-user">
+      <div className="sidebar-user" onClick={onProfile} style={{ cursor: 'pointer' }}>
         <div className="avatar">{user.username[0].toUpperCase()}</div>
         <div className="sidebar-user-info">
           <div className="sidebar-username">{user.username}</div>
@@ -37,7 +38,7 @@ export default function Sidebar({
       </div>
 
       {/* Streak Card */}
-      <div className="streak-card">
+      <div className="streak-card" onClick={onProfile} style={{ cursor: 'pointer' }}>
         <div className="streak-flame" style={{ color: streakColor }}>
           {user.streak >= 7 ? '🔥' : user.streak >= 3 ? '⚡' : '✨'}
         </div>
@@ -51,10 +52,25 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Browse Button */}
-      <div style={{ padding: '0 1rem', marginTop: '0.5rem' }}>
-        <button className="btn btn-secondary btn-full btn-sm" onClick={onBrowse}>
+      {/* Navigation Buttons */}
+      <div style={{ padding: '0 1rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+        <button 
+          className={`btn btn-full btn-sm ${activeView === 'browse' ? 'btn-primary' : 'btn-secondary'}`} 
+          onClick={onBrowse}
+        >
           🔍 Browse Subjects
+        </button>
+        <button 
+          className={`btn btn-full btn-sm ${activeView === 'profile' ? 'btn-primary' : 'btn-secondary'}`} 
+          onClick={onProfile}
+        >
+          👤 My Profile
+        </button>
+        <button 
+          className={`btn btn-full btn-sm ${activeView === 'workspace' ? 'btn-primary' : 'btn-secondary'}`} 
+          onClick={onPersonalWorkspace}
+        >
+          📁 Personal Study
         </button>
       </div>
 
@@ -69,7 +85,7 @@ export default function Sidebar({
         {sections.map(sec => {
           const notifCount = notifications[sec.id] || 0;
           const isExpanded = expandedSection === sec.id;
-          const isActive = activeSection?.id === sec.id;
+          const isActive = activeSection?.id === sec.id && activeView === 'section';
 
           return (
             <div key={sec.id} className="sidebar-section-group">
@@ -95,7 +111,7 @@ export default function Sidebar({
                   {activeSection.lectures.map(lec => (
                     <button
                       key={lec.title}
-                      className={`sidebar-lecture-btn${activeLecture === lec.title ? ' active' : ''}`}
+                      className={`sidebar-lecture-btn${activeLecture === lec.title && activeView === 'lecture' ? ' active' : ''}`}
                       onClick={() => onSelectLecture(lec.title)}
                     >
                       🎙️ {lec.title}

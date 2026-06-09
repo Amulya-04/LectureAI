@@ -40,6 +40,214 @@ export default function QuizPanel({ lectureTitle, userLevel, onScored, sectionId
     return 'quiz-opt';
   };
 
+  const handleExportPDF = () => {
+    if (!score) return;
+    const printWindow = window.open('', '_blank', 'width=800,height=1000');
+    if (!printWindow) {
+      alert('Please allow popups to export the PDF');
+      return;
+    }
+
+    const scoreColor = score.pct >= 75 ? '#10b981' : score.pct >= 40 ? '#f59e0b' : '#ef4444';
+    const scoreBg = score.pct >= 75 ? 'rgba(16, 185, 129, 0.05)' : score.pct >= 40 ? 'rgba(245, 158, 11, 0.05)' : 'rgba(239, 68, 68, 0.05)';
+    const scoreText = score.pct >= 75 ? '🏆 Excellent!' : score.pct >= 40 ? '🔶 Good effort!' : '🌱 Keep practising!';
+
+    const questionsHTML = quiz.map((q, i) => {
+      const userAns = selected[i];
+      const isCorrect = userAns === q.answer;
+
+      const optionsHTML = q.options.map(opt => {
+        let marker = '';
+        let itemClass = '';
+        if (opt === q.answer) {
+          marker = ' <span class="correct-marker">✓ Correct</span>';
+          itemClass = 'opt-correct';
+        } else if (opt === userAns) {
+          marker = ' <span class="wrong-marker">✗ Selected</span>';
+          itemClass = 'opt-wrong';
+        }
+        return `<li class="${itemClass}">${opt}${marker}</li>`;
+      }).join('');
+
+      return `
+        <div class="question-block">
+          <div class="question-title">Q${i + 1}. ${q.question}</div>
+          <ul class="options-list">${optionsHTML}</ul>
+          ${q.explanation ? `<div class="explanation-box">💡 <strong>Explanation:</strong> ${q.explanation}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Quiz Results - ${lectureTitle || 'Lecture Quiz'}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <style>
+          body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            background: #fff;
+          }
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+          }
+          .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #8b5cf6;
+          }
+          .badge {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+          }
+          h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            color: #111827;
+          }
+          .meta {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 25px;
+          }
+          .score-card {
+            background: ${scoreBg};
+            border: 1px solid ${scoreColor}40;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 35px;
+          }
+          .score-num {
+            font-size: 40px;
+            font-weight: 900;
+            color: ${scoreColor};
+            margin: 0;
+          }
+          .score-label {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 5px 0;
+          }
+          .score-desc {
+            font-size: 13px;
+            color: #6b7280;
+          }
+          .question-block {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 25px;
+          }
+          .question-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+          }
+          .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+          }
+          .options-list li {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            background: #f9fafb;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+          }
+          .options-list li.opt-correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+            font-weight: 500;
+          }
+          .options-list li.opt-wrong {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+          }
+          .correct-marker {
+            color: #10b981;
+            font-weight: 600;
+            margin-left: 10px;
+            font-size: 12px;
+          }
+          .wrong-marker {
+            color: #ef4444;
+            font-weight: 600;
+            margin-left: 10px;
+            font-size: 12px;
+          }
+          .explanation-box {
+            background: #f3f4f6;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #4b5563;
+            border-left: 3px solid #9ca3af;
+          }
+          .footer {
+            margin-top: 50px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="logo">🎓 LectureAI</div>
+          <div class="badge">${userLevel} Level</div>
+        </div>
+
+        <h1>Quiz Results: ${lectureTitle || 'Lecture Quiz'}</h1>
+        <div class="meta">Completed on ${new Date().toLocaleDateString()}</div>
+
+        <div class="score-card">
+          <div class="score-num">${score.correct} / ${score.total}</div>
+          <div class="score-label" style="color: ${scoreColor}">${score.pct}% — ${scoreText}</div>
+          <div class="score-desc">Personalized AI Evaluation</div>
+        </div>
+
+        ${questionsHTML}
+
+        <div class="footer">
+          Generated automatically by LectureAI personalized learning platform.
+        </div>
+
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 500);
+          }
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+  };
+
   return (
     <div>
       {quiz.length === 0 ? (
@@ -69,7 +277,10 @@ export default function QuizPanel({ lectureTitle, userLevel, onScored, sectionId
               </div>
               <div className="fw-600 mt-1">{score.pct}% — {score.pct >= 75 ? '🏆 Excellent!' : score.pct >= 40 ? '🔶 Good effort!' : '🌱 Keep practising!'}</div>
               <div className="text-xs text-muted mt-1">Your level score has been updated.</div>
-              <button className="btn btn-secondary btn-sm mt-2" onClick={generate}>Try another quiz</button>
+              <div className="flex gap-1 mt-2" style={{ justifyContent: 'center' }}>
+                <button className="btn btn-secondary btn-sm" onClick={generate}>Try another quiz</button>
+                <button className="btn btn-secondary btn-sm" onClick={handleExportPDF}>📄 Export PDF</button>
+              </div>
             </div>
           )}
 

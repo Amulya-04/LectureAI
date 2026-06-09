@@ -61,6 +61,10 @@ export const sectionAPI = {
   ask: (id, title, question, chatHistory) => api.post(`/sections/${id}/lectures/${encodeURIComponent(title)}/ask`, { question, chatHistory }),
   quiz: (id, title, numQuestions) => api.post(`/sections/${id}/lectures/${encodeURIComponent(title)}/quiz`, { numQuestions }),
   getStudents: (id) => api.get(`/sections/${id}/students`),
+  // Doubts
+  submitDoubt: (id, lectureTitle, question) => api.post(`/sections/${id}/doubts`, { lectureTitle, question }),
+  getDoubts: (id) => api.get(`/sections/${id}/doubts`),
+  answerDoubt: (id, doubtId, answer) => api.post(`/sections/${id}/doubts/${doubtId}/answer`, { answer }),
 };
 
 export default api;
